@@ -1,0 +1,275 @@
+// Dev Motors Web - Prisma Schema
+// Supported Providers: PostgreSQL (Supabase with Connection Pooling + Direct URL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// -------------------------------------------------------------
+// ENUMS
+// -------------------------------------------------------------
+
+enum DealershipChannel {
+  ARENA
+  NEXA
+}
+
+enum BodyType {
+  HATCHBACK
+  SEDAN
+  SUV
+  MUV
+  VAN
+}
+
+enum FuelType {
+  PETROL
+  CNG
+  HYBRID
+  ELECTRIC
+  DIESEL
+}
+
+enum TransmissionType {
+  MANUAL
+  AUTOMATIC
+  AMT
+  AGS
+  CVT
+}
+
+enum BookingType {
+  SERVICE_APPOINTMENT
+  TEST_DRIVE
+  DOORSTEP_SERVICE
+  GENERAL_INQUIRY
+}
+
+enum BookingStatus {
+  NEW
+  PENDING
+  CONFIRMED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum UsedCarStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+}
+
+enum InsuranceInquiryType {
+  NEW_POLICY
+  RENEWAL
+  CLAIM_ASSISTANCE
+}
+
+enum InsuranceStatus {
+  NEW
+  CONTACTED
+  QUOTE_SHARED
+  POLICY_ISSUED
+  CLOSED
+}
+
+// -------------------------------------------------------------
+// 1. SALES DOMAIN (CarModel & CarVariant)
+// -------------------------------------------------------------
+
+model CarModel {
+  id               String            @id @default(uuid())
+  name             String            @unique // e.g., "Swift", "Baleno", "Grand Vitara"
+  slug             String            @unique // e.g., "swift", "baleno"
+  tagline          String?
+  description      String?
+  channel          DealershipChannel @default(ARENA) // ARENA or NEXA
+  bodyType         BodyType          @default(HATCHBACK)
+  startingPrice    Decimal           @db.Decimal(12, 2) // Ex-showroom starting price in INR
+  heroImage        String?           // Cloud storage URL
+  galleryImages    String[]          @default([])
+  brochureUrl      String?
+  isFeatured       Boolean           @default(false)
+  isActive         Boolean           @default(true)
+
+  // Relations
+  variants         CarVariant[]
+  bookings         Booking[]
+
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+
+  @@index([channel])
+  @@index([bodyType])
+  @@index([isFeatured])
+}
+
+model CarVariant {
+  id               String           @id @default(uuid())
+  carModelId       String
+  name             String           // e.g., "LXi", "VXi", "ZXi+", "Alpha", "Zeta"
+  slug             String           // e.g., "zxi-plus"
+  fuelType         FuelType         @default(PETROL)
+  transmission     TransmissionType @default(MANUAL)
+  engineCapacityCc Int?             // e.g., 1197
+  mileage          String?          // e.g., "22.38 km/l" or "30.90 km/kg"
+  exShowroomPrice  Decimal          @db.Decimal(12, 2)
+  keyFeatures      String[]         @default([]) // Bullet features (e.g. 360 Camera, Sunroof)
+  availableColors  String[]         @default([])
+  isAvailable      Boolean          @default(true)
+
+  // Relations
+  carModel         CarModel         @relation(fields: [carModelId], references: [id], onDelete: Cascade)
+  bookings         Booking[]
+
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@unique([carModelId, name])
+  @@index([carModelId])
+  @@index([fuelType])
+  @@index([transmission])
+}
+
+// -------------------------------------------------------------
+// 2. AFTER-SALES DOMAIN (Service & Test Drive Bookings)
+// -------------------------------------------------------------
+
+model Booking {
+  id                   String        @id @default(uuid())
+  bookingNumber        String        @unique // Human-friendly reference e.g., "DM-2026-0001"
+  type                 BookingType   @default(SERVICE_APPOINTMENT)
+  status               BookingStatus @default(NEW)
+
+  // Customer Information
+  customerName         String
+  customerPhone        String
+  customerEmail        String?
+
+  // Car Details (Vehicle booked for service or requested for test drive)
+  carModelId           String?
+  carVariantId         String?
+  vehicleRegNumber     String?       // For service bookings e.g., "UP32AB1234"
+  odometerReadingKm    Int?          // Current km reading for service
+
+  // Schedule & Logistics
+  preferredDate        DateTime
+  preferredTimeSlot    String        // e.g., "10:00 AM - 12:00 PM"
+  pickupDropRequired   Boolean       @default(false)
+  pickupAddress        String?
+  serviceNotes         String?
+
+  // Relations
+  carModel             CarModel?     @relation(fields: [carModelId], references: [id], onDelete: SetNull)
+  carVariant           CarVariant?   @relation(fields: [carVariantId], references: [id], onDelete: SetNull)
+
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([type])
+  @@index([status])
+  @@index([customerPhone])
+  @@index([preferredDate])
+}
+
+// -------------------------------------------------------------
+// 3. TRUE VALUE DOMAIN (Certified Pre-Owned Cars)
+// -------------------------------------------------------------
+
+model UsedCar {
+  id                   String        @id @default(uuid())
+  registrationNumber   String        @unique // e.g. "UP32XY9876"
+  make                 String        @default("Maruti Suzuki")
+  model                String        // e.g. "Swift"
+  variant              String        // e.g. "VXi"
+  yearOfManufacture    Int           // e.g. 2021
+  ownershipCount       Int           @default(1) // 1 = 1st Owner
+  odometerReadingKm    Int           // e.g. 38500
+  fuelType             FuelType      @default(PETROL)
+  transmission         TransmissionType @default(MANUAL)
+  bodyColor            String        // e.g. "Pearl Arctic White"
+  sellingPrice         Decimal       @db.Decimal(12, 2) // Listed price in INR
+  status               UsedCarStatus @default(AVAILABLE)
+
+  // True Value Certification
+  certifiedByTrueValue Boolean       @default(true)
+  inspectionPointCount Int           @default(376) // e.g., 376-point digital inspection
+  warrantyMonths       Int           @default(12)  // e.g., 1 Year Warranty
+  freeServicesCount    Int           @default(3)   // e.g., 3 Free Services
+  insuranceValidUntil  DateTime?
+
+  // Media & Location
+  featuredImage        String?
+  galleryImages        String[]      @default([])
+  city                 String        @default("Lucknow")
+  rtoState             String        @default("UP (Uttar Pradesh)")
+  conditionNotes       String?       // Detailed inspection summary and notes
+  dealershipBranch     String        @default("Dev Motors Main Showroom")
+
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  @@index([model])
+  @@index([sellingPrice])
+  @@index([status])
+  @@index([fuelType])
+}
+
+// -------------------------------------------------------------
+// 4. INSURANCE DOMAIN (Insurance Plans & Inquiries)
+// -------------------------------------------------------------
+
+model InsurancePlan {
+  id            String   @id @default(uuid())
+  name          String   @unique // e.g. "Zero Depreciation Cover", "Engine & Gearbox Protect", "24x7 Roadside Assistance"
+  slug          String   @unique // e.g. "zero-depreciation", "engine-protect", "roadside-assistance"
+  description   String
+  category      String   @default("Add-On Cover") // e.g., "Comprehensive Add-On", "Assistance Cover"
+  startingPrice Decimal  @db.Decimal(12, 2)
+  keyBenefits   String[] @default([])
+  isActive      Boolean  @default(true)
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+model InsuranceInquiry {
+  id                   String               @id @default(uuid())
+  inquiryNumber        String               @unique // e.g. "INS-2026-0001"
+  type                 InsuranceInquiryType @default(RENEWAL)
+  status               InsuranceStatus      @default(NEW)
+
+  // Customer Information
+  customerName         String
+  customerPhone        String
+  customerEmail        String?
+
+  // Vehicle & Existing Policy Information
+  vehicleRegNumber     String               // e.g., "UP32CD5678"
+  carMakeAndModel      String               // e.g., "Maruti Suzuki Dzire VXi"
+  previousPolicyNumber String?
+  previousInsurer      String?              // e.g., "Maruti Insurance Broking / Bajaj Allianz"
+  policyExpiryDate     DateTime?
+  hasExistingClaim     Boolean              @default(false)
+  claimedNcbPercentage Int?                 // No Claim Bonus percentage (e.g., 20, 25, 35, 50)
+
+  // Quote & Notes
+  quotedAmount         Decimal?             @db.Decimal(12, 2)
+  assignedExecutive    String?
+  agentNotes           String?
+
+  createdAt            DateTime             @default(now())
+  updatedAt            DateTime             @updatedAt
+
+  @@index([type])
+  @@index([status])
+  @@index([customerPhone])
+  @@index([vehicleRegNumber])
+}
