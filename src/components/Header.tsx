@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import QuickBookingModal from "@/components/common/QuickBookingModal";
 import {
   ChevronDown,
   Menu,
@@ -14,11 +15,21 @@ import {
   Wrench,
   ShieldCheck,
   FileText,
+  Sparkles,
 } from "lucide-react";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [quickModalOpen, setQuickModalOpen] = useState(false);
+  const [quickModalMode, setQuickModalMode] = useState<"sales" | "service">("sales");
+
+  const openQuickModal = (mode: "sales" | "service") => {
+    setActiveDropdown(null);
+    setMobileMenuOpen(false);
+    setQuickModalMode(mode);
+    setQuickModalOpen(true);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-xs">
@@ -171,15 +182,16 @@ export default function Header() {
                     href="/sales"
                     className="font-bold text-[#111827] hover:text-[#E31837] transition-colors flex items-center gap-1"
                   >
-                    <span>View Complete 10-Car Showroom Catalog</span>
+                    <span>View Complete Showroom Catalog</span>
                     <span>&rarr;</span>
                   </Link>
-                  <Link
-                    href="/sales#test-drive"
-                    className="text-[11px] font-bold text-[#E31837] hover:underline uppercase tracking-wider"
+                  <button
+                    type="button"
+                    onClick={() => openQuickModal("sales")}
+                    className="text-[11px] font-bold text-[#E31837] hover:underline uppercase tracking-wider flex items-center gap-1 cursor-pointer"
                   >
-                    Book Doorstep Test Drive
-                  </Link>
+                    <span>⚡ Quick Test Drive / Price</span>
+                  </button>
                 </div>
               </div>
             )}
@@ -200,12 +212,25 @@ export default function Header() {
             </Link>
 
             {activeDropdown === "service" && (
-              <div className="absolute left-0 top-full w-60 bg-white border border-gray-200 shadow-lg py-2 z-50">
+              <div className="absolute left-0 top-full w-64 bg-white border border-gray-200 shadow-xl py-2 z-50">
+                <button
+                  type="button"
+                  onClick={() => openQuickModal("service")}
+                  className="w-full text-left px-4 py-2.5 text-xs bg-red-50/70 hover:bg-red-50 text-[#C8102E] font-bold flex items-center justify-between border-b border-gray-100 cursor-pointer transition-colors"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#C8102E]" />
+                    Book Service Appointment
+                  </span>
+                  <span className="text-[9px] bg-[#C8102E] text-white font-bold px-1.5 py-0.5 rounded-xs uppercase tracking-wider">
+                    Instant
+                  </span>
+                </button>
                 <Link
                   href="/after-sales/book-service"
                   className="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 hover:text-[#C8102E] font-medium"
                 >
-                  Book Service Appointment
+                  Service Overview &amp; Booking
                 </Link>
                 <Link
                   href="/after-sales/book-service#packages"
@@ -217,7 +242,7 @@ export default function Header() {
                   href="/after-sales/book-service#doorstep"
                   className="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 hover:text-[#C8102E] font-medium"
                 >
-                  Doorstep Pickup & Drop
+                  Doorstep Pickup &amp; Drop
                 </Link>
               </div>
             )}
@@ -266,54 +291,65 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Contact Us Dropdown Button */}
-        <div
-          className="relative hidden sm:block"
-          onMouseEnter={() => setActiveDropdown("contact")}
-          onMouseLeave={() => setActiveDropdown(null)}
-        >
+        {/* Quick Online Booking CTA & Contact Us Dropdown Button */}
+        <div className="hidden sm:flex items-center gap-2">
           <button
             type="button"
-            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-[#1F2937] border border-gray-300 hover:border-black transition-colors"
+            onClick={() => openQuickModal("sales")}
+            className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-[#C8102E] hover:bg-[#A80D26] uppercase tracking-wider transition-colors cursor-pointer"
           >
-            <span>Contact Us</span>
-            <ChevronDown className="h-3.5 w-3.5 text-gray-500" />
+            <span>⚡ Book Online</span>
           </button>
 
-          {activeDropdown === "contact" && (
-            <div className="absolute right-0 top-full w-72 bg-white border border-gray-200 shadow-xl p-4 z-50 text-xs space-y-3">
-              <div className="border-b border-gray-100 pb-2">
-                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
-                  DEALERSHIP HOTLINE
-                </span>
-                <a
-                  href="tel:+919876543210"
-                  className="text-sm font-bold text-[#1B365D] hover:text-[#C8102E] flex items-center gap-2 mt-1"
+          <div
+            className="relative"
+            onMouseEnter={() => setActiveDropdown("contact")}
+            onMouseLeave={() => setActiveDropdown(null)}
+          >
+            <button
+              type="button"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-[#1F2937] border border-gray-300 hover:border-black transition-colors"
+            >
+              <span>Contact Us</span>
+              <ChevronDown className="h-3.5 w-3.5 text-gray-500" />
+            </button>
+
+            {activeDropdown === "contact" && (
+              <div className="absolute right-0 top-full w-72 bg-white border border-gray-200 shadow-xl p-4 z-50 text-xs space-y-3">
+                <div className="border-b border-gray-100 pb-2">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
+                    DEALERSHIP HOTLINE
+                  </span>
+                  <a
+                    href="tel:+919876543210"
+                    className="text-sm font-bold text-[#1B365D] hover:text-[#C8102E] flex items-center gap-2 mt-1"
+                  >
+                    <Phone className="h-4 w-4 text-[#C8102E]" />
+                    <span>+91 98765 43210</span>
+                  </a>
+                </div>
+
+                <div className="space-y-1.5 text-gray-600 text-[11px]">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0 mt-0.5" />
+                    <span>Dev Motors Arena Campus, Hazratganj & Kanpur Road, Lucknow</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-3.5 w-3.5 text-gray-400 shrink-0" />
+                    <span>Open All 7 Days: 9:30 AM - 7:30 PM</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => openQuickModal("sales")}
+                  className="block w-full text-center bg-[#C8102E] text-white py-2 text-xs font-bold uppercase tracking-wider hover:bg-[#A80D26] transition-colors cursor-pointer"
                 >
-                  <Phone className="h-4 w-4 text-[#C8102E]" />
-                  <span>+91 98765 43210</span>
-                </a>
+                  ⚡ Book a Test Drive
+                </button>
               </div>
-
-              <div className="space-y-1.5 text-gray-600 text-[11px]">
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-3.5 w-3.5 text-gray-400 shrink-0 mt-0.5" />
-                  <span>Dev Motors Arena Campus, Hazratganj & Kanpur Road, Lucknow</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Clock className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-                  <span>Open All 7 Days: 9:30 AM - 7:30 PM</span>
-                </div>
-              </div>
-
-              <Link
-                href="/sales#test-drive"
-                className="block w-full text-center bg-[#C8102E] text-white py-2 text-xs font-bold uppercase tracking-wider hover:bg-[#A80D26] transition-colors"
-              >
-                Book a Test Drive
-              </Link>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Mobile Hamburger Toggle */}
@@ -329,6 +365,24 @@ export default function Header() {
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-gray-200 bg-white px-4 py-5 shadow-xl text-sm font-medium space-y-3">
+          {/* Quick Action Buttons for Mobile */}
+          <div className="grid grid-cols-2 gap-2 pt-1 pb-2">
+            <button
+              type="button"
+              onClick={() => openQuickModal("sales")}
+              className="py-2.5 px-2 bg-[#C8102E] text-white text-[11px] font-bold uppercase tracking-wider text-center"
+            >
+              🚗 Sales Enquiry
+            </button>
+            <button
+              type="button"
+              onClick={() => openQuickModal("service")}
+              className="py-2.5 px-2 bg-[#1B365D] text-white text-[11px] font-bold uppercase tracking-wider text-center"
+            >
+              🔧 Book Service
+            </button>
+          </div>
+
           <Link
             href="/"
             onClick={() => setMobileMenuOpen(false)}
@@ -362,7 +416,7 @@ export default function Header() {
             onClick={() => setMobileMenuOpen(false)}
             className="block py-1.5 text-gray-800 hover:text-[#C8102E]"
           >
-            Service & Maintenance
+            Service &amp; Maintenance
           </Link>
           <Link
             href="/true-value/buy"
@@ -388,6 +442,13 @@ export default function Header() {
           </div>
         </div>
       )}
+
+      {/* Quick Booking Modal for Sales & Service */}
+      <QuickBookingModal
+        isOpen={quickModalOpen}
+        onClose={() => setQuickModalOpen(false)}
+        initialMode={quickModalMode}
+      />
     </header>
   );
 }

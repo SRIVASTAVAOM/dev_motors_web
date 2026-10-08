@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import QuickBookingForm from "@/components/common/QuickBookingForm";
 import {
   Users,
   Lightbulb,
@@ -51,6 +53,8 @@ const VALUES: ValueItem[] = [
 ];
 
 export default function OurValues() {
+  const [activeFormMode, setActiveFormMode] = useState<"sales" | "service">("sales");
+
   return (
     <section className="relative py-20 bg-white overflow-hidden border-t border-gray-100">
       {/* Background Graphic: Angular Corporate Deep-Blue Geometry matching Screenshot 1 */}
@@ -91,21 +95,50 @@ export default function OurValues() {
           })}
         </div>
 
-        {/* Two Crisp Red Rectangular Action Buttons matching Screenshot 1 */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-          <Link
-            href="/sales"
-            className="w-full sm:w-auto bg-[#C8102E] hover:bg-[#A80D26] text-white py-3 px-8 text-xs font-black uppercase tracking-wider text-center transition-colors rounded-none shadow-xs"
-          >
-            WORK WITH US
-          </Link>
+        {/* Work With Us (Sales) & Train With Us (Service) Action Buttons & Form Section */}
+        <div className="pt-6 space-y-6">
+          <div className="text-center space-y-1">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[#E31837]">
+              INSTANT APPOINTMENT &amp; ON-ROAD PRICE HUB
+            </span>
+            <h3 className="text-xl sm:text-2xl font-black text-[#111827] uppercase tracking-tight">
+              Get Started with Dev Motors Lucknow
+            </h3>
+            <p className="text-xs text-gray-500 max-w-lg mx-auto">
+              Select your requirement below. We provide instant quotes and service slot confirmation on WhatsApp.
+            </p>
+          </div>
 
-          <Link
-            href="/after-sales/book-service"
-            className="w-full sm:w-auto bg-[#C8102E] hover:bg-[#A80D26] text-white py-3 px-8 text-xs font-black uppercase tracking-wider text-center transition-colors rounded-none shadow-xs"
-          >
-            TRAIN WITH US
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button
+              type="button"
+              onClick={() => setActiveFormMode("sales")}
+              className={`w-full sm:w-auto py-3.5 px-8 text-xs font-black uppercase tracking-wider text-center transition-all cursor-pointer ${
+                activeFormMode === "sales"
+                  ? "bg-[#C8102E] text-white shadow-md ring-2 ring-[#C8102E]/30"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+              }`}
+            >
+              WORK WITH US (NEW CAR SALES)
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveFormMode("service")}
+              className={`w-full sm:w-auto py-3.5 px-8 text-xs font-black uppercase tracking-wider text-center transition-all cursor-pointer ${
+                activeFormMode === "service"
+                  ? "bg-[#1B365D] text-white shadow-md ring-2 ring-[#1B365D]/30"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+              }`}
+            >
+              TRAIN WITH US (SERVICE &amp; REPAIR)
+            </button>
+          </div>
+
+          {/* Embedded Smart Booking Form */}
+          <div className="max-w-2xl mx-auto pt-2">
+            <QuickBookingForm key={activeFormMode} initialMode={activeFormMode} />
+          </div>
         </div>
       </div>
     </section>
