@@ -5,11 +5,15 @@ import { defineConfig, env } from "prisma/config";
 dotenv.config({ path: ".env.local" });
 dotenv.config();
 
+const dbUrl =
+  process.env.DIRECT_URL ||
+  process.env.DATABASE_URL ||
+  "postgresql://postgres:postgres@localhost:5432/postgres";
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   datasource: {
-    // For CLI migrations/push on Supabase, direct connection (session mode) is preferred
-    url: process.env.DIRECT_URL ? env("DIRECT_URL") : env("DATABASE_URL"),
+    url: dbUrl,
   },
   migrations: {
     seed: "tsx prisma/seed.ts",
