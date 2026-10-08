@@ -98,11 +98,12 @@ export default function Header() {
 
                     <div className="space-y-1">
                       {[
+                        { name: "Victoris", slug: "victoris", price: "₹ 7.89 Lakh*" },
                         { name: "Swift", slug: "swift", price: "₹ 6.49 Lakh*" },
                         { name: "Brezza", slug: "brezza", price: "₹ 8.34 Lakh*" },
                         { name: "Dzire", slug: "dzire", price: "₹ 6.57 Lakh*" },
+                        { name: "Ertiga", slug: "ertiga", price: "₹ 8.69 Lakh*" },
                         { name: "S-Presso", slug: "s-presso", price: "₹ 4.26 Lakh*" },
-                        { name: "Eeco", slug: "eeco", price: "₹ 5.32 Lakh*" },
                       ].map((car) => (
                         <Link
                           key={car.slug}
@@ -144,6 +145,8 @@ export default function Header() {
                         { name: "Jimny (4x4)", slug: "jimny", price: "₹ 12.74 Lakh*" },
                         { name: "XL6", slug: "xl6", price: "₹ 11.61 Lakh*" },
                         { name: "Baleno", slug: "baleno", price: "₹ 6.66 Lakh*" },
+                        { name: "Invicto", slug: "invicto", price: "₹ 25.30 Lakh*" },
+                        { name: "e-Vitara", slug: "e-vitara", price: "₹ 19.99 Lakh*" },
                       ].map((car) => (
                         <Link
                           key={car.slug}
