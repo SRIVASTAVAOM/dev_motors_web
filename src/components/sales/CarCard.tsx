@@ -98,14 +98,14 @@ export default function CarCard({ car }: CarCardProps) {
         className="group relative flex flex-col bg-white border border-gray-200 shadow-xs hover:shadow-xl transition-all duration-200 select-none will-change-transform"
       >
         {/* Top Badges & Image Preview */}
-        <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-gradient-to-b from-white via-gray-50 to-gray-200/90 border-b border-gray-100">
           {car.heroImage ? (
             <Image
               src={car.heroImage}
               alt={car.name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-106"
+              className="object-contain p-3 transition-transform duration-500 group-hover:scale-108 drop-shadow-sm"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center text-gray-400">

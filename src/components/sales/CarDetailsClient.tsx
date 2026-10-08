@@ -96,7 +96,7 @@ export default function CarDetailsClient({ car }: CarDetailsClientProps) {
               transform: transformStyle,
               transition: "transform 0.16s cubic-bezier(0.2, 0, 0, 1)",
             }}
-            className="group relative aspect-[16/10] w-full overflow-hidden border border-gray-200 bg-gray-100 shadow-xs will-change-transform select-none"
+            className="group relative aspect-[16/10] w-full overflow-hidden border border-gray-200 bg-gradient-to-b from-white via-gray-50 to-gray-200/90 shadow-xs will-change-transform select-none"
           >
             {activeImage ? (
               <Image
@@ -105,16 +105,13 @@ export default function CarDetailsClient({ car }: CarDetailsClientProps) {
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 60vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-103"
+                className="object-contain p-4 pb-8 transition-transform duration-500 group-hover:scale-105 drop-shadow-md"
               />
             ) : (
               <div className="flex h-full w-full items-center justify-center text-gray-400">
                 No preview available
               </div>
             )}
-
-            {/* Vignette */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/20" />
 
             {/* Dynamic Glare Sheen */}
             <div
@@ -150,7 +147,7 @@ export default function CarDetailsClient({ car }: CarDetailsClientProps) {
             )}
           </div>
 
-          {/* Gallery Thumbnails */}
+          {/* Gallery / Color Thumbnails */}
           {car.galleryImages && car.galleryImages.length > 0 && (
             <div className="flex items-center gap-2 overflow-x-auto pb-1">
               {[car.heroImage, ...car.galleryImages]
@@ -159,9 +156,9 @@ export default function CarDetailsClient({ car }: CarDetailsClientProps) {
                   <button
                     key={idx}
                     onClick={() => setActiveImage(img as string)}
-                    className={`relative h-16 w-24 shrink-0 overflow-hidden border-2 transition-all cursor-pointer ${
+                    className={`relative h-16 w-24 shrink-0 overflow-hidden border-2 bg-gradient-to-b from-white to-gray-100 transition-all cursor-pointer ${
                       activeImage === img
-                        ? "border-[#E31837] shadow-sm"
+                        ? "border-[#E31837] shadow-sm ring-1 ring-[#E31837]"
                         : "border-gray-200 opacity-60 hover:opacity-100"
                     }`}
                   >
@@ -169,7 +166,7 @@ export default function CarDetailsClient({ car }: CarDetailsClientProps) {
                       src={img as string}
                       alt={`${car.name} thumbnail ${idx}`}
                       fill
-                      className="object-cover"
+                      className="object-contain p-1 drop-shadow-xs"
                     />
                   </button>
                 ))}

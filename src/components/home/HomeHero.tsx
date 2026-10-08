@@ -26,8 +26,8 @@ const HERO_SLIDES: HeroSlide[] = [
     price: "₹ 10.99 Lakh*",
     mileage: "27.97 km/l ARAI*",
     slug: "grand-vitara",
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=85",
-    ctaText: "EXPLORE 3D SHOWROOM",
+    image: "/images/cars/grand-vitara.png",
+    ctaText: "EXPLORE SHOWROOM",
   },
   {
     id: "brezza",
@@ -37,7 +37,7 @@ const HERO_SLIDES: HeroSlide[] = [
     price: "₹ 8.34 Lakh*",
     mileage: "19.89 km/l ARAI*",
     slug: "brezza",
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1600&q=85",
+    image: "/images/cars/brezza.png",
     ctaText: "VIEW SPECIFICATIONS",
   },
   {
@@ -48,7 +48,7 @@ const HERO_SLIDES: HeroSlide[] = [
     price: "₹ 6.49 Lakh*",
     mileage: "25.75 km/l ARAI*",
     slug: "swift",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1600&q=85",
+    image: "/images/cars/swift.png",
     ctaText: "TEST DRIVE NOW",
   },
 ];
@@ -59,7 +59,7 @@ export default function HomeHero() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
-    }, 6000);
+    }, 5500);
     return () => clearInterval(timer);
   }, []);
 
@@ -67,7 +67,7 @@ export default function HomeHero() {
 
   return (
     <div className="relative w-full h-[520px] sm:h-[620px] bg-[#0E131F] text-white overflow-hidden select-none">
-      {/* Background Image Carousel with Ken Burns subtle pan */}
+      {/* Background Image Carousel with Studio Spotlight */}
       {HERO_SLIDES.map((s, index) => (
         <div
           key={s.id}
@@ -75,17 +75,25 @@ export default function HomeHero() {
             index === currentSlide ? "opacity-100" : "opacity-0 pointer-events-none"
           }`}
         >
-          <Image
-            src={s.image}
-            alt={s.title}
-            fill
-            priority={index === 0}
-            sizes="100vw"
-            className="object-cover object-center transform scale-102 transition-transform duration-7000 ease-out"
-          />
-          {/* Authentic OEM Lighting Vignette */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />
+          {/* Studio Radial Spotlight */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,_rgba(30,41,59,0.7)_0%,_rgba(14,19,31,1)_75%)]" />
+
+          {/* Large Real Car Image on Right Side */}
+          <div className="absolute right-0 bottom-4 sm:bottom-8 top-16 sm:top-10 w-full lg:w-3/5 flex items-center justify-end px-4 sm:px-12 pointer-events-none">
+            <div className="relative w-full h-full max-h-[480px]">
+              <Image
+                src={s.image}
+                alt={s.title}
+                fill
+                priority={index === 0}
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-contain object-bottom drop-shadow-[0_25px_35px_rgba(0,0,0,0.85)] transform transition-transform duration-1000 scale-102"
+              />
+            </div>
+          </div>
+
+          {/* Authentic Gradient Fade for Left-side Typography */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0E131F] via-[#0E131F]/85 to-transparent lg:w-1/2 pointer-events-none" />
         </div>
       ))}
 

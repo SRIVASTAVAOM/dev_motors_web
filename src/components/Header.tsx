@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import {
   ChevronDown,
@@ -26,23 +27,20 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-3 group">
           {/* Authentic Suzuki S-Mark SVG Logo */}
           <div className="flex items-center gap-2.5">
-            <svg
-              className="h-8 w-8 text-[#1B365D] transition-transform group-hover:scale-105"
-              viewBox="0 0 100 100"
-              fill="currentColor"
-            >
-              {/* Geometric Suzuki S Symbol */}
-              <polygon points="12,12 88,12 55,46 12,46" fill="#1B365D" />
-              <polygon points="88,88 12,88 45,54 88,54" fill="#C8102E" />
-              <polygon points="12,46 45,54 12,88" fill="#1B365D" />
-              <polygon points="88,54 55,46 88,12" fill="#C8102E" />
-            </svg>
+            <Image
+              src="/devmotors.png"
+              alt="Dev Motors Logo"
+              width={44}
+              height={44}
+              className="h-10 w-10 sm:h-11 sm:w-11 object-contain transition-transform group-hover:scale-105"
+              priority
+            />
             <div className="flex flex-col">
               <span className="text-lg sm:text-xl font-black tracking-tight text-[#1B365D] leading-none uppercase">
-                MARUTI SUZUKI
+                DEV MOTORS
               </span>
               <span className="text-[9px] font-bold tracking-widest text-[#4B5563] uppercase mt-0.5">
-                DEV MOTORS • AUTHORIZED DEALER
+                MARUTI SUZUKI • AUTHORIZED DEALER
               </span>
             </div>
           </div>
@@ -79,31 +77,107 @@ export default function Header() {
             </Link>
 
             {activeDropdown === "sales" && (
-              <div className="absolute left-0 top-full w-56 bg-white border border-gray-200 shadow-lg py-2 z-50">
-                <Link
-                  href="/sales?channel=ARENA"
-                  className="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 hover:text-[#C8102E] font-medium"
-                >
-                  Maruti Suzuki ARENA
-                </Link>
-                <Link
-                  href="/sales?channel=NEXA"
-                  className="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 hover:text-[#C8102E] font-medium"
-                >
-                  NEXA Experience
-                </Link>
-                <Link
-                  href="/sales/grand-vitara"
-                  className="block px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 hover:text-[#C8102E] font-medium"
-                >
-                  Grand Vitara (3D Showcase)
-                </Link>
-                <Link
-                  href="/sales"
-                  className="block px-4 py-2 text-xs font-bold text-[#1B365D] border-t border-gray-100 hover:bg-gray-50"
-                >
-                  Explore All Models &rarr;
-                </Link>
+              <div className="absolute -left-12 top-full w-[540px] bg-white border border-gray-200 shadow-xl z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                <div className="grid grid-cols-2 divide-x divide-gray-100 p-4">
+                  {/* ARENA CHANNEL */}
+                  <div className="pr-4 space-y-2.5">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#E31837]" />
+                        <span className="text-[11px] font-black uppercase tracking-wider text-[#111827]">
+                          ARENA RANGE
+                        </span>
+                      </div>
+                      <Link
+                        href="/sales?channel=ARENA"
+                        className="text-[10px] font-bold text-[#E31837] hover:underline uppercase"
+                      >
+                        All Arena &rarr;
+                      </Link>
+                    </div>
+
+                    <div className="space-y-1">
+                      {[
+                        { name: "Swift", slug: "swift", price: "₹ 6.49 Lakh*" },
+                        { name: "Brezza", slug: "brezza", price: "₹ 8.34 Lakh*" },
+                        { name: "Dzire", slug: "dzire", price: "₹ 6.57 Lakh*" },
+                        { name: "S-Presso", slug: "s-presso", price: "₹ 4.26 Lakh*" },
+                        { name: "Eeco", slug: "eeco", price: "₹ 5.32 Lakh*" },
+                      ].map((car) => (
+                        <Link
+                          key={car.slug}
+                          href={`/sales/${car.slug}`}
+                          className="flex items-center justify-between px-2.5 py-1.5 hover:bg-gray-50 rounded-xs transition-colors group"
+                        >
+                          <span className="text-xs font-bold text-gray-800 group-hover:text-[#E31837]">
+                            {car.name}
+                          </span>
+                          <span className="text-[10px] font-medium text-gray-500">
+                            {car.price}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* NEXA CHANNEL */}
+                  <div className="pl-4 space-y-2.5">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-gray-100">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-[#1B365D]" />
+                        <span className="text-[11px] font-black uppercase tracking-wider text-[#111827]">
+                          NEXA RANGE
+                        </span>
+                      </div>
+                      <Link
+                        href="/sales?channel=NEXA"
+                        className="text-[10px] font-bold text-[#1B365D] hover:underline uppercase"
+                      >
+                        All Nexa &rarr;
+                      </Link>
+                    </div>
+
+                    <div className="space-y-1">
+                      {[
+                        { name: "Grand Vitara", slug: "grand-vitara", price: "₹ 10.99 Lakh*" },
+                        { name: "Fronx", slug: "fronx", price: "₹ 7.52 Lakh*" },
+                        { name: "Jimny (4x4)", slug: "jimny", price: "₹ 12.74 Lakh*" },
+                        { name: "XL6", slug: "xl6", price: "₹ 11.61 Lakh*" },
+                        { name: "Baleno", slug: "baleno", price: "₹ 6.66 Lakh*" },
+                      ].map((car) => (
+                        <Link
+                          key={car.slug}
+                          href={`/sales/${car.slug}`}
+                          className="flex items-center justify-between px-2.5 py-1.5 hover:bg-gray-50 rounded-xs transition-colors group"
+                        >
+                          <span className="text-xs font-bold text-gray-800 group-hover:text-[#1B365D]">
+                            {car.name}
+                          </span>
+                          <span className="text-[10px] font-medium text-gray-500">
+                            {car.price}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Showroom Action Bar */}
+                <div className="bg-[#F9FAFB] px-4 py-2.5 border-t border-gray-100 flex items-center justify-between text-xs">
+                  <Link
+                    href="/sales"
+                    className="font-bold text-[#111827] hover:text-[#E31837] transition-colors flex items-center gap-1"
+                  >
+                    <span>View Complete 10-Car Showroom Catalog</span>
+                    <span>&rarr;</span>
+                  </Link>
+                  <Link
+                    href="/sales#test-drive"
+                    className="text-[11px] font-bold text-[#E31837] hover:underline uppercase tracking-wider"
+                  >
+                    Book Doorstep Test Drive
+                  </Link>
+                </div>
               </div>
             )}
           </div>

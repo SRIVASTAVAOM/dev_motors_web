@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, ArrowRight, CalendarCheck } from "lucide-react";
 
 interface CarShowcaseItem {
@@ -17,39 +18,84 @@ interface CarShowcaseItem {
 
 const ARENA_CARS: CarShowcaseItem[] = [
   {
-    id: "eeco",
-    name: "EECO",
-    slug: "eeco",
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
-    tagline: "India's Multi-Purpose Van",
-    startingPrice: "₹ 5.32 Lakh*",
+    id: "swift",
+    name: "SWIFT",
+    slug: "swift",
+    image: "/images/cars/swift.png",
+    tagline: "All-New Z-Series Engine",
+    startingPrice: "₹ 6.49 Lakh*",
     channel: "ARENA",
   },
   {
-    id: "s-presso",
-    name: "S-PRESSO",
-    slug: "s-presso",
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
-    tagline: "Mini-SUV Attitude",
-    startingPrice: "₹ 4.26 Lakh*",
+    id: "brezza",
+    name: "BREZZA",
+    slug: "brezza",
+    image: "/images/cars/brezza.png",
+    tagline: "Hot & Techy Compact SUV",
+    startingPrice: "₹ 8.34 Lakh*",
     channel: "ARENA",
   },
   {
     id: "dzire",
     name: "DZIRE",
     slug: "dzire",
-    image: "https://images.unsplash.com/photo-1541348263662-e0c8de4259ba?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/dzire.png",
     tagline: "India's Best-Selling Sedan",
     startingPrice: "₹ 6.57 Lakh*",
     channel: "ARENA",
   },
   {
-    id: "swift",
-    name: "SWIFT",
-    slug: "swift",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
-    tagline: "All-New Z-Series Engine",
-    startingPrice: "₹ 6.49 Lakh*",
+    id: "ertiga",
+    name: "ERTIGA",
+    slug: "ertiga",
+    image: "/images/cars/ertiga.png",
+    tagline: "India's Favorite 7-Seater Family Car",
+    startingPrice: "₹ 8.69 Lakh*",
+    channel: "ARENA",
+  },
+  {
+    id: "wagon-r",
+    name: "WAGON-R",
+    slug: "wagon-r",
+    image: "/images/cars/wagon-r.png",
+    tagline: "The Dil Se Strong Tall Boy",
+    startingPrice: "₹ 5.54 Lakh*",
+    channel: "ARENA",
+  },
+  {
+    id: "s-presso",
+    name: "S-PRESSO",
+    slug: "s-presso",
+    image: "/images/cars/s-presso.png",
+    tagline: "Mini-SUV Attitude",
+    startingPrice: "₹ 4.26 Lakh*",
+    channel: "ARENA",
+  },
+  {
+    id: "alto-k10",
+    name: "ALTO K-10",
+    slug: "alto-k10",
+    image: "/images/cars/alto-k10.png",
+    tagline: "India's Most Trusted First Car",
+    startingPrice: "₹ 3.99 Lakh*",
+    channel: "ARENA",
+  },
+  {
+    id: "eeco",
+    name: "EECO",
+    slug: "eeco",
+    image: "/images/cars/eeco.png",
+    tagline: "India's Multi-Purpose Van",
+    startingPrice: "₹ 5.32 Lakh*",
+    channel: "ARENA",
+  },
+  {
+    id: "celerio",
+    name: "CELERIO",
+    slug: "celerio",
+    image: "/images/cars/celerio.png",
+    tagline: "3D Organic Sculpted Style",
+    startingPrice: "₹ 5.36 Lakh*",
     channel: "ARENA",
   },
 ];
@@ -59,7 +105,7 @@ const NEXA_CARS: CarShowcaseItem[] = [
     id: "grand-vitara",
     name: "GRAND VITARA",
     slug: "grand-vitara",
-    image: "https://images.unsplash.com/photo-1502877338535-766e1452684a?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/grand-vitara.png",
     tagline: "Intelligent Electric Hybrid",
     startingPrice: "₹ 10.99 Lakh*",
     channel: "NEXA",
@@ -68,7 +114,7 @@ const NEXA_CARS: CarShowcaseItem[] = [
     id: "fronx",
     name: "FRONX",
     slug: "fronx",
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/grand-vitara.png",
     tagline: "Shape Your New",
     startingPrice: "₹ 7.52 Lakh*",
     channel: "NEXA",
@@ -77,7 +123,7 @@ const NEXA_CARS: CarShowcaseItem[] = [
     id: "jimny",
     name: "JIMNY",
     slug: "jimny",
-    image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/grand-vitara.png",
     tagline: "Legendary 4x4 ALLGRIP PRO",
     startingPrice: "₹ 12.74 Lakh*",
     channel: "NEXA",
@@ -86,7 +132,7 @@ const NEXA_CARS: CarShowcaseItem[] = [
     id: "xl6",
     name: "XL6",
     slug: "xl6",
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=800&q=80",
+    image: "/images/cars/ertiga.png",
     tagline: "Premium 3-Row MPV",
     startingPrice: "₹ 11.61 Lakh*",
     channel: "NEXA",
@@ -94,6 +140,7 @@ const NEXA_CARS: CarShowcaseItem[] = [
 ];
 
 function Model3DCard({ car }: { car: CarShowcaseItem }) {
+  const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
   const [transformStyle, setTransformStyle] = useState("");
   const [glare, setGlare] = useState({ opacity: 0, x: 50, y: 50 });
@@ -125,16 +172,24 @@ function Model3DCard({ car }: { car: CarShowcaseItem }) {
     setGlare({ opacity: 0, x: 50, y: 50 });
   };
 
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('a[href*="test-drive"]')) {
+      return;
+    }
+    router.push(`/sales/${car.slug}`);
+  };
+
   return (
     <div
       ref={cardRef}
+      onClick={handleCardClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
         transform: transformStyle,
         transition: "transform 0.16s cubic-bezier(0.2, 0, 0, 1)",
       }}
-      className="group relative w-full aspect-[16/10] bg-gray-100 overflow-hidden border border-gray-200 shadow-xs cursor-pointer will-change-transform select-none"
+      className="group relative w-full aspect-[16/10] bg-gradient-to-b from-white via-gray-50 to-gray-200/90 overflow-hidden border border-gray-200 shadow-xs cursor-pointer will-change-transform select-none"
     >
       {/* Background Car Photo */}
       <Image
@@ -142,11 +197,8 @@ function Model3DCard({ car }: { car: CarShowcaseItem }) {
         alt={car.name}
         fill
         sizes="(max-width: 768px) 100vw, 25vw"
-        className="object-cover transition-transform duration-500 group-hover:scale-106"
+        className="object-contain p-3 pb-8 transition-transform duration-500 group-hover:scale-108 drop-shadow-sm"
       />
-
-      {/* Ambient Gradient Overlay for Text Readability */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-transparent" />
 
       {/* Dynamic 3D Glare */}
       <div
@@ -158,13 +210,13 @@ function Model3DCard({ car }: { car: CarShowcaseItem }) {
         className="absolute inset-0 pointer-events-none mix-blend-overlay"
       />
 
-      {/* Model Name Banner matching Screenshot 5 */}
-      <div className="absolute bottom-4 left-0 right-0 text-center z-10">
-        <h4 className="text-base sm:text-lg font-black tracking-wider text-white uppercase drop-shadow-md">
+      {/* Model Name Banner */}
+      <div className="absolute bottom-2.5 left-0 right-0 text-center z-10 px-2 bg-gradient-to-t from-gray-200/90 via-gray-100/60 to-transparent pt-3 pb-1">
+        <h4 className="text-xs sm:text-sm font-black tracking-wider text-[#111827] uppercase">
           {car.name}
         </h4>
         {car.startingPrice && (
-          <span className="text-[11px] font-semibold text-gray-200 block opacity-90 group-hover:opacity-100">
+          <span className="text-[10px] font-bold text-[#E31837] block">
             Starting {car.startingPrice}
           </span>
         )}
