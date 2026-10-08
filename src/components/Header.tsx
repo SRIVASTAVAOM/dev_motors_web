@@ -321,11 +321,11 @@ export default function Header() {
                     DEALERSHIP HOTLINE
                   </span>
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+916388447553"
                     className="text-sm font-bold text-[#1B365D] hover:text-[#C8102E] flex items-center gap-2 mt-1"
                   >
                     <Phone className="h-4 w-4 text-[#C8102E]" />
-                    <span>+91 98765 43210</span>
+                    <span>+91 63884-47553</span>
                   </a>
                 </div>
 
@@ -336,7 +336,7 @@ export default function Header() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Clock className="h-3.5 w-3.5 text-gray-400 shrink-0" />
-                    <span>Open All 7 Days: 9:30 AM - 7:30 PM</span>
+                    <span>All Days: 9:00 AM - 7:00 PM</span>
                   </div>
                 </div>
 
@@ -434,10 +434,10 @@ export default function Header() {
           </Link>
           <div className="pt-3 border-t border-gray-100">
             <a
-              href="tel:+919876543210"
+              href="tel: +91 63884-47553"
               className="block w-full text-center bg-[#C8102E] text-white py-2.5 text-xs font-bold uppercase tracking-wider"
             >
-              Call Dealership: +91 98765 43210
+              Call Dealership: +91 63884-47553
             </a>
           </div>
         </div>
