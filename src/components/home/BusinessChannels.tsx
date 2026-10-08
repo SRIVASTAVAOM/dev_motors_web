@@ -20,7 +20,7 @@ const CHANNELS: ChannelItem[] = [
     title: "N E X A",
     tagline: "Create. Inspire. Premium Automotive Lineup.",
     link: "/sales?channel=NEXA",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/channels/nexa.png",
     logoStyle: "nexa",
   },
   {
@@ -28,7 +28,7 @@ const CHANNELS: ChannelItem[] = [
     title: "ARENA",
     tagline: "Find Your Match. India's Favourite Cars.",
     link: "/sales?channel=ARENA",
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/channels/arena.png",
     logoStyle: "arena",
   },
   {
@@ -36,7 +36,7 @@ const CHANNELS: ChannelItem[] = [
     title: "TRUE VALUE",
     tagline: "376 Checkpoints Certified Pre-Owned Cars.",
     link: "/true-value/buy",
-    image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/channels/truevalue.png",
     logoStyle: "truevalue",
   },
   {
@@ -44,7 +44,7 @@ const CHANNELS: ChannelItem[] = [
     title: "COMMERCIAL",
     tagline: "Powerful, Reliable Goods & Passenger Carriers.",
     link: "/sales",
-    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1000&q=80",
+    image: "/images/channels/commercial.webp",
     logoStyle: "commercial",
   },
 ];
